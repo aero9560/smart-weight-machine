@@ -1,8 +1,14 @@
 from tkinter import *
 from HX711 import *
-import threading
+#import threading
+from gpiozero import Button as gpiobutton
+from escpos import printer
+from time import *
+from datetime import date
+from datetime import datetime
 
 
+#****************************global variables declaration **********************
 
 global batch_code
 global f0
@@ -17,12 +23,54 @@ global frame_no
 global hx
 global weight       
         
+#************************* Global Variables assignment****************************
 
 hx = AdvancedHX711(27, 17, 198227, 114496, Rate.HZ_80)
 w = 0.0
+total_weight = 0.0
 
-def raise_frame(frame):
-    frame.tkraise()
+
+
+def zero1():  # Reset current weight
+    hx.zero()
+
+#*************************** Horizontal Physical Button *************************
+bth1 = gpiobutton(16)
+bth2 = gpiobutton(21)
+bth3 = gpiobutton(20)
+bth4 = gpiobutton(13)
+bth5 = gpiobutton(6)
+#*************************** Vertical Physical Button ***************************
+btv1 = gpiobutton(26)
+
+
+def unsetbutton():           # Remove all button functions
+    def none():
+        print("")
+    bth1.when_pressed= none
+    bth2.when_pressed= none
+    bth3.when_pressed= none
+    bth4.when_pressed= none
+    bth5.when_pressed= none
+    btv1.when_pressed= none
+
+
+#def raise_frame(frame):
+    #frame.tkraise()
+
+
+
+def total(a,b):
+    global total_weight
+    #print (type(total_weight)) 
+    b = b + a
+    b = float('{:.1f}'.format(b))
+    total_weight = b
+    #print(b)
+    
+    title = Label(f4, text='{:.1f}'.format(b), font=('', 40,'bold'),bg='white',fg='#000000')
+    title.place(x=1500, y=210)
+
 
 def addweight(com):
     global commodity_name
@@ -47,7 +95,7 @@ def addweight(com):
     bt_back = Button(f3,image= back,bg ='#228A4F',activebackground='#228A4F',highlightthickness = 0, bd= 0, command=commo)
     bt_back.place(x=1635, y=100)
     
-    bt_add = Button(f3,image= records, pady=20,bg ='#228A4F',activebackground='#228A4F', highlightthickness = 0, bd= 0)
+    bt_add = Button(f3,image= add, pady=20,bg ='#228A4F',activebackground='#228A4F', highlightthickness = 0, bd= 0,command=lambda:total(w,total_weight))
     bt_add.place(x=813, y=850)
     
     bt_print = Button(f3,image= Print, pady=20,bg ='#228A4F',activebackground='#228A4F', highlightthickness = 0, bd= 0)
@@ -76,7 +124,7 @@ def addweight(com):
         Ladyfinger_label.place(x=50,y=50) 
     
     
-    batch_no_label = Label(f4, text="BATCH NUMBER",font=('', 20), bg='white',fg='#000000')
+    batch_no_label = Label(f4, text="BATCH NUMBER",font=('', 20), bg='white',fg='grey')
     batch_no_label.place(x=500, y= 50)
     
     
@@ -86,7 +134,7 @@ def addweight(com):
     commodity_label1 = Label(f4, text=f"{commodity_name}", font=('', 40 ,'bold'), bg='white',fg='#000000')
     commodity_label1.place(x=500, y=250)
     
-    weight_label = Label(f4, text="WEIGHT  (KG)", font=('', 20), bg='white',fg='#000000')
+    weight_label = Label(f4, text="WEIGHT  (KG)", font=('', 20), bg='white',fg='grey')
     weight_label.place(x=1100, y=150)
     
     weight = Label(root,text=w,font = ('', 40,'bold'),bg='white',fg='#000000')
@@ -95,7 +143,7 @@ def addweight(com):
     #weight = Label(f4,text=w,font = ('', 40,'bold'), bg='white',fg='#000000')
     #weight.place(x=1100,y=225)
     
-    total_weight_label = Label(f4, text="TOTAL WEIGHT  (KG)", font=('', 20), bg='white',fg='#000000')
+    total_weight_label = Label(f4, text="TOTAL WEIGHT  (KG)", font=('', 20), bg='white',fg='grey')
     total_weight_label.place(x=1500, y=150)
     
     

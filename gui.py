@@ -46,7 +46,7 @@ btv1 = gpiobutton(26)
 
 def unsetbutton():           # Remove all button functions
     def none():
-        print("")
+        pass
     bth1.when_pressed= none
     bth2.when_pressed= none
     bth3.when_pressed= none
@@ -104,6 +104,12 @@ def addweight(com):
     bt_save_exit = Button(f3,image= save,bg ='#228A4F',activebackground='#228A4F', highlightthickness = 0, bd= 0)
     bt_save_exit.place(x=1558, y=850)
     
+    unsetbutton()
+    btv1.when_pressed = command=commo
+    bth3.when_pressed = command=lambda:total(w,total_weight)
+    #bth4.when_pressed = batchcode
+    #bth5.when_pressed = zero1
+    
     f4 = Frame(f3, bg='white', width = 1860 , height = 400 , highlightbackground='black', highlightthicknes=10)
     f4.place(x= 30 ,y= 330)
     
@@ -127,10 +133,9 @@ def addweight(com):
     batch_no_label = Label(f4, text="BATCH NUMBER",font=('', 20), bg='white',fg='grey')
     batch_no_label.place(x=500, y= 50)
     
-    
-    
     commodity_label = Label(f4, text="COMMODITY", font=('', 20), bg='white',fg='grey')
     commodity_label.place(x=500, y=200)
+    
     commodity_label1 = Label(f4, text=f"{commodity_name}", font=('', 40 ,'bold'), bg='white',fg='#000000')
     commodity_label1.place(x=500, y=250)
     
@@ -139,9 +144,6 @@ def addweight(com):
     
     weight = Label(root,text=w,font = ('', 40,'bold'),bg='white',fg='#000000')
     weight.place(x=1135,y=550)
-    
-    #weight = Label(f4,text=w,font = ('', 40,'bold'), bg='white',fg='#000000')
-    #weight.place(x=1100,y=225)
     
     total_weight_label = Label(f4, text="TOTAL WEIGHT  (KG)", font=('', 20), bg='white',fg='grey')
     total_weight_label.place(x=1500, y=150)
@@ -165,7 +167,6 @@ def commo():
     f3.destroy()
     
     def backfun():
-        #pass
         global last
         if last == 1:
             batch()
@@ -183,29 +184,30 @@ def commo():
     
     backbtn = Button(f2,image= back,bg ='#228A4F',activebackground='#228A4F',highlightthickness = 0, bd= 0, command=backfun)
     backbtn.place(x=1635, y=100)
-    #btv1.when_pressed = batchcode
-   
+    
     potatobtn = Button(f2,image= potato,bg ='#228A4F',activebackground='#228A4F',highlightthickness = 0, bd= 0, command=lambda: addweight("Potato"))
     potatobtn.place(x=25, y=500)
-    #bth1.when_pressed = lambda: commo_dity("Potato")
-        
+    
     onionbtn = Button(f2, image= onion,bg ='#228A4F',activebackground='#228A4F',highlightthickness = 0, bd= 0, command=lambda:addweight("Onion"))
     onionbtn.place(x=410, y=500)
-    #bth2.when_pressed = lambda: commo_dity("onion")
-        
+    
     eggplantbtn = Button(f2,image= eggplant,bg ='#228A4F',activebackground='#228A4F',highlightthickness = 0, bd= 0,command=lambda: addweight("Eggplant"))
     eggplantbtn.place(x=790, y=500)
-    #bth3.when_pressed = lambda: commo_dity("eggplant")
-        
+    
     pumpkinbtn = Button(f2, image= pumpkin,bg ='#228A4F',activebackground='#228A4F',highlightthickness = 0, bd= 0, command=lambda:addweight("Pumpkin"))
     pumpkinbtn.place(x=1170, y=500)
-    #bth4.when_pressed = lambda: commo_dity("pumpkin")
-        
+    
     ladyfingerbtn = Button(f2, image= ladyfinger,bg ='#228A4F',activebackground='#228A4F',highlightthickness = 0, bd= 0, command=lambda: addweight("Ladyfinger"))
     ladyfingerbtn.place(x=1550, y=500)
-    #bth5.when_pressed = lambda: commo_dity("ladyfinger")
-
-
+    
+    unsetbutton()
+    bth1.when_pressed = lambda: addweight("Potato")
+    bth2.when_pressed = lambda: addweight("Onion")
+    bth3.when_pressed = lambda: addweight("Eggplant")
+    bth4.when_pressed = lambda: addweight("Pumpkin")
+    bth5.when_pressed = lambda: addweight("Ladyfinger")
+    btv1.when_pressed = backfun
+    
 def batch():
     global f0
     global f1
@@ -276,6 +278,10 @@ def batch():
     nextbtn = Button(f1,  image= Next,bg ='#228A4F',highlightthickness = 0, bd= 0,activebackground='#228A4F',command=commo)
     nextbtn.place(x=1558, y=850)
     
+    unsetbutton()
+    btv1.when_pressed = main
+    bth5.when_pressed = commo
+    
 
 def main():
     global f0
@@ -316,6 +322,11 @@ def main():
     bt_newbatch = Button(f0,image= newbatch,bg ='#228A4F',activebackground='#228A4F', highlightthickness = 0, bd= 0 , command = commo)
     bt_newbatch.place(x=1558, y=850)
     
+    unsetbutton()
+    bth1.when_pressed = zero1
+    #bth3.when_pressed = cleanAndExit
+    bth4.when_pressed = batch
+    bth5.when_pressed = commo
 
 def core():   
         global w

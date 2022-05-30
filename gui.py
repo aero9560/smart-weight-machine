@@ -35,6 +35,8 @@ global delete
 global dt_string
 global close
 global pre_batch_no
+global printdone
+
 
 #************************* Global Variables assignment****************************
 
@@ -42,7 +44,10 @@ global pre_batch_no
 hx = AdvancedHX711(27, 17, 4403, 156457, Rate.HZ_80)
 w = 0.0
 total_weight = 0.0
-#lcd = LCD()
+try:
+    lcd = LCD()
+except Exception as e:
+    print(e)
 now = datetime.now()
 dt_string = now.strftime("%b/%d/%Y %H:%M:%S")
 
@@ -167,10 +172,10 @@ def total(a,b):              # Add Weight function
 
 def back7():
     global printdone
-    if printdone == 1:
-        pass
-    else:
+    if printdone == 0:
         commo()
+    else:
+        pass
 
 def addweight(com):
     global commodity_name
@@ -572,7 +577,8 @@ def main():      #      frame 0 design
     global weight
     global batch_no
     global pre_batch_no
-    
+    global printdone
+    printdone = 0
     frame_no = 0
     
     f1.destroy()
@@ -634,8 +640,11 @@ def core():
 
             weight.config(text=w)
             weight.update()
-            #lcd.text(" Weight Machine", 1)
-            #lcd.text(f"   {w}   ", 2)
+            try:
+                lcd.text(" Weight Machine", 1)
+                lcd.text(f"   {w}   ", 2)
+            except Exception as e:
+                print(e)
 
 #********************************************************************************
 
